@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // Adduser data save to Firebase
+  addUser() {
+    FirebaseFirestore.instance
+        .collection('user')
+        .add({"name": "Nasir", "contact": "03408587236", "country": "Pakistan"})
+        .then((Value) => print("$Value Done"))
+        .onError((error, stackTrace) => print("$error"));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,12 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Center(child: Text("HomeScreen")),
           SizedBox(height: 14),
-          InkWell(
-            onTap: () async {
-              FirebaseAuth.instance.signOut();
-              Navigator.pop(context);
+          ElevatedButton(
+            onPressed: () {
+              addUser();
             },
-            child: const Text("Sign Out"),
+            child: Text("Add User"),
           ),
         ],
       ),
